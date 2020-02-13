@@ -1,0 +1,20 @@
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/front/src/main/app/build
+
+/front/target
+/back/target
+
+npm-debug.log*
+
+.idea
+
+*.iml
