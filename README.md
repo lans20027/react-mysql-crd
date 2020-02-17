@@ -1,5 +1,7 @@
 "# react-mysql-crd" 
 
+react js create-read-delete app with java(resteasy restapi) backend
+
 Wildfly's standalone.xml datasource definition:<br>
 ...<br>
 `<datasource jta="true" jndi-name="java:/MySqlDS" pool-name="MySqlDS" enabled="true" use-ccm="true">`<br>
