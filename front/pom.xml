@@ -11,7 +11,6 @@
 
     <artifactId>front</artifactId>
     <packaging>war</packaging>
-
     <properties>
         <node.version>v12.5.0</node.version>
         <npm.version>6.13.7</npm.version>
@@ -22,75 +21,72 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${frontend-maven-plugin.version}</version>
-
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <nodeVersion>${node.version}</nodeVersion>
-                    <npmVersion>${npm.version}</npmVersion>
-                    <workingDirectory>${frontend-src-dir}</workingDirectory>
-                    <installDirectory>${project.build.directory}</installDirectory>
+                    <webResources>
+                        <resource>
+                            <directory>${frontend-src-dir}/build/</directory>
+                        </resource>
+                    </webResources>
                 </configuration>
-
-
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                    </execution>
-
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-
-                    <execution>
-                        <id>npm build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <arguments>build</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.2</version>
                 <executions>
                     <execution>
-                        <id>position-react-build</id>
+                        <id>npm install (initialize)</id>
                         <goals>
-                            <goal>copy-resources</goal>
+                            <goal>exec</goal>
                         </goals>
-                        <phase>prepare-package</phase>
+                        <phase>initialize</phase>
                         <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${frontend-src-dir}/build</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
+                            <workingDirectory>${frontend-src-dir}</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm install (clean)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>pre-clean</phase>
+                        <configuration>
+                            <workingDirectory>${frontend-src-dir}</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm run build (compile)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <workingDirectory>${frontend-src-dir}</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>
+
 
 </project>
