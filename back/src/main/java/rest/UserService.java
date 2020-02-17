@@ -2,7 +2,6 @@ package rest;
 
 
 import dao.UserDAO;
-import dao.UserDAOBean;
 import model.User;
 
 import javax.ejb.EJB;
@@ -19,7 +18,6 @@ public class UserService {
     @POST
     @Consumes(value = {MediaType.APPLICATION_JSON})
     public void saveUser(User user){
-        System.out.println("saving:" + user);
         userDAO.saveOrUpdate(user);
     }
 
